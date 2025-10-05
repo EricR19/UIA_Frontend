@@ -45,11 +45,9 @@ const Profesores = () => {
 
     try {
       if (editingProfesor) {
-        // Para editar, solo enviamos los campos que cambiaron
+        // Para editar, no permitir cambio de contraseña desde aquí
         const updateData = { ...formData };
-        if (!updateData.Password) {
-          delete updateData.Password; // No actualizar contraseña si está vacía
-        }
+        delete updateData.Password; // Siempre eliminar Password al editar
         await profesoresService.update(editingProfesor.Id_profesor, updateData);
         setSuccess("✓ Profesor actualizado correctamente");
       } else {
@@ -334,22 +332,24 @@ const Profesores = () => {
                   />
                 </div>
 
-                {/* Solo mostrar campo de contraseña al EDITAR */}
+                {/* Mensaje informativo sobre cambio de contraseña al EDITAR */}
                 {editingProfesor && (
                   <div className="form-group">
-                    <label>Nueva Contraseña (opcional)</label>
-                    <input
-                      type="password"
-                      value={formData.Password}
-                      onChange={(e) =>
-                        setFormData({ ...formData, Password: e.target.value })
-                      }
-                      minLength={6}
-                      placeholder="Dejar vacío para mantener la actual"
-                    />
-                    <small style={{ color: "#666", fontSize: "0.85em" }}>
-                      💡 Solo completa si quieres cambiar la contraseña
-                    </small>
+                    <div
+                      style={{
+                        background: "#fff3cd",
+                        border: "1px solid #ffc107",
+                        borderRadius: "8px",
+                        padding: "15px",
+                        color: "#856404",
+                      }}
+                    >
+                      <strong>🔐 Cambio de Contraseña</strong>
+                      <p style={{ margin: "5px 0 0 0", fontSize: "0.9em" }}>
+                        Solo el profesor puede cambiar su propia contraseña
+                        desde la sección de Ajustes.
+                      </p>
+                    </div>
                   </div>
                 )}
 
