@@ -54,18 +54,10 @@ const Ajustes = () => {
       return;
     }
 
-    // Verificar que el usuario esté cargado
-    if (!user || !user.user_id) {
-      setError(
-        "Error: Usuario no identificado. Por favor, inicia sesión nuevamente."
-      );
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
     try {
-      await profesoresService.updatePassword(user.user_id, {
+      // Usar el nuevo endpoint /me/password que usa el token JWT
+      await profesoresService.updatePassword({
         current_password: formData.currentPassword,
         new_password: formData.newPassword,
       });

@@ -102,8 +102,8 @@ export const profesoresService = {
   create: (data) => api.post("/profesores", data),
   update: (id, data) => api.put(`/profesores/${id}`, data),
   delete: (id) => api.delete(`/profesores/${id}`),
-  updatePassword: (id, password) =>
-    api.put(`/profesores/${id}`, { Password: password }),
+  updatePassword: (passwordData) =>
+    api.put("/profesores/me/password", passwordData),
 };
 
 export const rubrosService = {
