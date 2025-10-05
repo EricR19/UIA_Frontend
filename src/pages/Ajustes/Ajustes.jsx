@@ -54,9 +54,18 @@ const Ajustes = () => {
       return;
     }
 
+    // Verificar que el usuario esté cargado
+    if (!user || !user.user_id) {
+      setError(
+        "Error: Usuario no identificado. Por favor, inicia sesión nuevamente."
+      );
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
-      await profesoresService.updatePassword(user.id, {
+      await profesoresService.updatePassword(user.user_id, {
         current_password: formData.currentPassword,
         new_password: formData.newPassword,
       });
