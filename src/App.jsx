@@ -45,10 +45,17 @@ function App() {
             {/* Dashboard - Accesible para todos los usuarios autenticados */}
             <Route index element={<Dashboard />} />
 
-            {/* Estudiantes - Accesible para todos los usuarios autenticados */}
-            <Route path="estudiantes" element={<Estudiantes />} />
+            {/* Estudiantes - Solo administradores */}
+            <Route
+              path="estudiantes"
+              element={
+                <AdminRoute>
+                  <Estudiantes />
+                </AdminRoute>
+              }
+            />
 
-            {/* Profesores - Solo administradores */}
+            {/* Profesores - Solo administradores */
             <Route
               path="profesores"
               element={

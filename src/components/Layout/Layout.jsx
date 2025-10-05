@@ -75,16 +75,18 @@ const Layout = () => {
             <span className="sidebar-text">Inicio</span>
           </Link>
 
-          <Link
-            to="/estudiantes"
-            className={`sidebar-link ${
-              isActive("/estudiantes") ? "active" : ""
-            }`}
-            onClick={closeSidebar}
-          >
-            <span className="sidebar-icon">👨‍🎓</span>
-            <span className="sidebar-text">Estudiantes</span>
-          </Link>
+          {isAdmin && (
+            <Link
+              to="/estudiantes"
+              className={`sidebar-link ${
+                isActive("/estudiantes") ? "active" : ""
+              }`}
+              onClick={closeSidebar}
+            >
+              <span className="sidebar-icon">👨‍🎓</span>
+              <span className="sidebar-text">Estudiantes</span>
+            </Link>
+          )}
 
           <Link
             to="/notas"
