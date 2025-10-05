@@ -23,7 +23,6 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          {/* Ruta pública - Login */}
           <Route
             path="/login"
             element={
@@ -33,7 +32,6 @@ function App() {
             }
           />
 
-          {/* Rutas privadas - Requieren autenticación */}
           <Route
             path="/"
             element={
@@ -42,10 +40,8 @@ function App() {
               </PrivateRoute>
             }
           >
-            {/* Dashboard - Accesible para todos los usuarios autenticados */}
             <Route index element={<Dashboard />} />
 
-            {/* Estudiantes - Solo administradores */}
             <Route
               path="estudiantes"
               element={
@@ -55,7 +51,6 @@ function App() {
               }
             />
 
-            {/* Profesores - Solo administradores */
             <Route
               path="profesores"
               element={
@@ -65,14 +60,11 @@ function App() {
               }
             />
 
-            {/* Notas - Accesible para todos (con restricciones por rol) */}
             <Route path="notas" element={<Notas />} />
 
-            {/* Ajustes - Accesible para todos los usuarios autenticados */}
             <Route path="ajustes" element={<Ajustes />} />
           </Route>
 
-          {/* Ruta catch-all - Redirige al login */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </AuthProvider>
