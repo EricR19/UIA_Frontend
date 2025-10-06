@@ -118,6 +118,13 @@ const Notas = () => {
   };
 
   const handleInputChange = (campo, valor) => {
+    // Validar que el valor esté en el rango permitido (0-100)
+    const numValor = parseFloat(valor);
+    if (valor !== "" && (numValor < 0 || numValor > 100)) {
+      setError("⚠️ Las notas deben estar entre 0 y 100");
+      return;
+    }
+
     // Actualizar valor temporal mientras se edita
     setEditingValues((prev) => ({
       ...prev,
@@ -127,9 +134,17 @@ const Notas = () => {
 
   const handleGuardarNota = async (notaId, campo, valor) => {
     try {
+      const numValor = parseFloat(valor) || 0;
+
+      // Validar rango antes de enviar al backend
+      if (numValor < 0 || numValor > 100) {
+        setError("⚠️ Las notas deben estar entre 0 y 100");
+        return;
+      }
+
       const updateData = {
         Semana: semanaActual,
-        [campo]: parseFloat(valor) || 0,
+        [campo]: numValor,
       };
       await notasService.update(notaId, updateData);
       setSuccess("✓ Nota guardada correctamente");
@@ -142,8 +157,26 @@ const Notas = () => {
         return newValues;
       });
     } catch (error) {
-      const errorMsg = error.response?.data?.detail || "Error al guardar nota";
+      // Manejar error de validación (422) del backend
+      let errorMsg = "Error al guardar nota";
+
+      if (error.response?.status === 422) {
+        errorMsg = "⚠️ Valor inválido. Las notas deben estar entre 0 y 100";
+      } else if (error.response?.data?.detail) {
+        errorMsg = error.response.data.detail;
+      }
+
       setError(errorMsg);
+
+      // Limpiar el valor inválido del estado temporal
+      setEditingValues((prev) => {
+        const newValues = { ...prev };
+        delete newValues[campo];
+        return newValues;
+      });
+
+      // Recargar notas para restaurar valores correctos
+      await loadNotas();
     }
   };
 
