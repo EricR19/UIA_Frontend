@@ -162,8 +162,18 @@ const Notas = () => {
 
       if (error.response?.status === 422) {
         errorMsg = "⚠️ Valor inválido. Las notas deben estar entre 0 y 100";
+
+        // Si el backend envía detalles, extraerlos de forma segura
+        const detail = error.response?.data?.detail;
+        if (Array.isArray(detail) && detail.length > 0) {
+          errorMsg = `⚠️ ${detail[0].msg || errorMsg}`;
+        } else if (typeof detail === "string") {
+          errorMsg = detail;
+        }
       } else if (error.response?.data?.detail) {
-        errorMsg = error.response.data.detail;
+        const detail = error.response.data.detail;
+        errorMsg =
+          typeof detail === "string" ? detail : "Error al guardar nota";
       }
 
       setError(errorMsg);
